@@ -36,7 +36,7 @@ Cloná el repositorio:
 ```bash
 git clone https://github.com/PalleiroJoaquin/Gestor-de-precios-con-FastAPI.git
 cd Gestor-de-precios-con-FastAPI
-cd tu-repo
+
 Instalá las dependencias con:
 pip install -r requirements.txt
 
