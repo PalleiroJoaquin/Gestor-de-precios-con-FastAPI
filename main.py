@@ -114,6 +114,17 @@ def product_to_read(product: Product) -> ProductRead:
 
 
 # ---------- Endpoints de productos ----------
+<<<<<<< HEAD
+=======
+@app.get("/products/search", response_model=List[ProductRead], tags=["Productos"])
+def search_products(name: Optional[str] = None, session: Session = Depends(get_session)):
+    q = select(Product)
+    if name:
+        like = f"%{name.lower()}%"
+        q = q.where(Product.name.ilike(like))
+    products = session.exec(q).all()
+    return [product_to_read(p) for p in products]
+>>>>>>> 47e6039 (feat(api): search por nombre + dry_run en /products/increase)
 
 @app.post("/products", response_model=ProductRead, tags=["Productos"])
 def create_product(
@@ -209,6 +220,10 @@ def delete_product(
 )
 def bulk_increase(
     payload: BulkIncreaseRequest,
+<<<<<<< HEAD
+=======
+    dry_run: bool = False,                 # <-- agregado
+>>>>>>> 47e6039 (feat(api): search por nombre + dry_run en /products/increase)
     session: Session = Depends(get_session),
 ):
     query = select(Product)
@@ -222,6 +237,23 @@ def bulk_increase(
     factor = 1 + payload.percentage / 100.0
     updated_count = 0
 
+<<<<<<< HEAD
+=======
+    if dry_run:
+        # no toca la base; solo reporta cuántos y ejemplo de cambios
+        sample = []
+        for p in products[:10]:  # muestra 10 de ejemplo
+            new_price = round(p.price * factor, 2)
+            sample.append({"id": p.id, "name": p.name, "old_price": p.price, "new_price": new_price})
+        return {
+            "updated": len(products),
+            "percentage": payload.percentage,
+            "category": payload.category,
+            "sample": sample,
+        }
+
+    # Aplicación real
+>>>>>>> 47e6039 (feat(api): search por nombre + dry_run en /products/increase)
     for product in products:
         old_price = product.price
         new_price = round(old_price * factor, 2)
